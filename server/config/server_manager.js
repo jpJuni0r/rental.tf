@@ -9,9 +9,16 @@ function createServer(server) {
   return new Promise((resolve, reject) => {
     const {DEMOS_KEY, LOGS_KEY} = Meteor.settings;
 
+    let formatedRegion = 'fra1';
+
+    switch (server.region) {
+      case 'usaSf': formatedRegion = 'sfo2'; break;
+      case 'usaNy': formatedRegion = 'nyc2'; break;
+    }
+
     const configuration = {
-      name: `tf2-${server._id}-${server.region}-${server.username}`,
-      region: 'fra1',
+      name: `tf2-${server._id}-${server.region}`,
+      region: formatedRegion,
       size: '2gb',
       image: 24094773,
       ssh_keys: [ // eslint-disable-line camelcase
@@ -29,7 +36,8 @@ function createServer(server) {
 
     api.dropletsCreate(configuration, (err, res) => {
       if (err) {
-        reject(err);
+        console.log(err);
+        return reject(err);
       }
 
       resolve(res.body.droplet);

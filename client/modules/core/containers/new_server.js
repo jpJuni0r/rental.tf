@@ -6,9 +6,9 @@ export const composer = ({context}, onData) => {
 
   const {Form} = t.form;
   const Regions = t.enums({
-    eu: 'Europe',
-    us: 'America',
-    asia: 'Asia'
+    eu: 'Frankfurt (Germany)',
+    usaSf: 'San Fancisco',
+    usaNy: 'New York'
   });
 
   const FormSchema = t.struct({
