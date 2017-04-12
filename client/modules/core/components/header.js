@@ -16,6 +16,9 @@ class Header extends React.Component {
                 <li className={currentRoute === 'server.list' ? 'active' : null}>
                   <a href="/">Home</a>
                 </li>
+                <li className={currentRoute === 'server.new' ? 'active' : null}>
+                  <a href="/new">New Server</a>
+                </li>
               </ul>
 
               {loggedIn ? (
@@ -26,7 +29,6 @@ class Header extends React.Component {
                     </a>
                     <ul className="dropdown-menu">
                       <li>
-                        <a href={`/profile/${user.profile.id}`}>Profile </a>
                         <a href="/logout">Logout</a>
                       </li>
                     </ul>
