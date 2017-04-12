@@ -36,7 +36,6 @@ function createServer(server) {
 
     api.dropletsCreate(configuration, (err, res) => {
       if (err) {
-        console.log(err);
         return reject(err);
       }
 
