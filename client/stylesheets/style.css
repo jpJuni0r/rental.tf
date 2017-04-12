@@ -1,0 +1,16 @@
+/*
+  Server list
+*/
+
+.pointer {
+  cursor: pointer;
+}
+
+
+/*
+  Server
+*/
+
+.destroy-server {
+  float: right;
+}
