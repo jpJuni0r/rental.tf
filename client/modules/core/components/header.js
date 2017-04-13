@@ -23,6 +23,13 @@ class Header extends React.Component {
 
               {loggedIn ? (
                 <ul className="nav navbar-nav pull-right">
+                  {user.profile.activeServer ? (
+                    <li>
+                      <a href={`/server/${user.profile.activeServer}`}>Server running&nbsp;
+                        <i className="glyphicon glyphicon-refresh gly-spin"></i>
+                      </a>
+                    </li>
+                  ) : null}
                   <li className="dropdown">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown">
                       {user.profile.name} <span className="caret" />

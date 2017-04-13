@@ -10,6 +10,10 @@ export default function () {
 
       const verifiedUser = Meteor.users.findOne(this.userId);
 
+      if (!verifiedUser || verifiedUser.profile.serverActive) {
+        throw new Meteor.Error(403);
+      }
+
       const server = {
         _id,
         status: 'SETUP',
@@ -24,6 +28,7 @@ export default function () {
       };
 
       Server.insert(server);
+      Meteor.users.update(this.userId, {$set: {'profile.activeServer': _id}});
     },
     'server.destroy'(_id) {
       const server = Server.findOne(_id);
@@ -36,9 +41,13 @@ export default function () {
       const TOKEN = Meteor.settings.DO_KEY;
       const api = new wrapper(TOKEN);
 
-      api.dropletsDelete(server.droplet).then(() => {
+      if (!Meteor.settings.DISABLE_RENTING) {
+        api.dropletsDelete(server.droplet).then(() => {
+          Server.update(_id, {$set: {status: 'DESTROYED'}});
+        });
+      } else {
         Server.update(_id, {$set: {status: 'DESTROYED'}});
-      });
+      }
     }
   });
 }

@@ -46,20 +46,24 @@ function createServer(server) {
 export default function () {
   Server.find().observe({
     added(server) {
-      if (new Date() - server.createdAt < 1000) {
-        createServer(server).then(droplet => {
-          Server.update({_id: server._id}, {$set: {droplet: droplet.id, status: 'STAGING'}});
+      if (!Meteor.settings.DISABLE_RENTING) {
+        if (new Date() - server.createdAt < 1000) {
+          createServer(server).then(droplet => {
+            Server.update({_id: server._id}, {$set: {droplet: droplet.id, status: 'STAGING'}});
 
-          Meteor.setTimeout(() => {
-            api.dropletsGetById(droplet.id).then(res => {
-              const newDroplet = res.body.droplet;
-              const ip = newDroplet.networks.v4[0].ip_address;
+            Meteor.setTimeout(() => {
+              api.dropletsGetById(droplet.id).then(res => {
+                const newDroplet = res.body.droplet;
+                const ip = newDroplet.networks.v4[0].ip_address;
 
-              // TODO: Throw error on invalid IP
-              Server.update({_id: server._id}, {$set: {ip, status: 'BOOTING'}});
-            });
-          }, 2000);
-        });
+                // TODO: Throw error on invalid IP
+                Server.update({_id: server._id}, {$set: {ip, status: 'BOOTING'}});
+              });
+            }, 2000);
+          });
+        }
+      } else {
+        Server.update(server._id, {$set: {ip: '127.0.0.1', status: 'READY'}});
       }
     }
   });

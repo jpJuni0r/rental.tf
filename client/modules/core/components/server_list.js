@@ -19,6 +19,15 @@ class ServerList extends React.Component {
             </tr>
           </thead>
           <tbody>
+            {servers.length === 0 ? (
+              <tr>
+                <td colSpan="4" className="text-center">
+                  <em>
+                    No servers were created, yet. Go ahead and <a href="/new">create</a> one!
+                  </em>
+                </td>
+              </tr>
+            ) : null}
             {servers.map(server => (
               <tr key={server._id} onClick={this._gotoServer.bind(this, server._id)}
                 className="pointer">

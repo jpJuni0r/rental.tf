@@ -2,7 +2,7 @@ import NewServer from '../components/new_server';
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 
 export const composer = ({context}, onData) => {
-  const {t} = context();
+  const {t, Meteor} = context();
 
   const {Form} = t.form;
   const Regions = t.enums({
@@ -23,7 +23,15 @@ export const composer = ({context}, onData) => {
     region: 'eu'
   };
 
-  onData(null, {Form, FormSchema, defaultState});
+  const user = Meteor.user();
+
+  let serverActive = false;
+
+  if (user && user.profile && user.profile.serverActive) {
+    serverActive = true;
+  }
+
+  onData(null, {Form, FormSchema, defaultState, user, serverActive});
 };
 export const depsMapper = (context, actions) => ({
   newServer: actions.server.newServer,

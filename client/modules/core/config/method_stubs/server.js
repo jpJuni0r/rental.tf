@@ -17,6 +17,10 @@ export default function ({Meteor, Collections, check}) {
       };
 
       Collections.Server.insert(server);
+      Meteor.users.update(this.userId, {$set: {'profile.activeServer': _id}});
+    },
+    'server.destroy'() {
+      Meteor.users.update(this.userId, {$set: {'profile.activeServer': false}});
     }
   });
 }

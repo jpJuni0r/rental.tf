@@ -6,6 +6,7 @@ import ServerList from './containers/server_list';
 import Server from './containers/server';
 import NewServer from './containers/new_server';
 import Login from './containers/login';
+import Logout from './containers/logout';
 
 export default function (injectDeps, {FlowRouter}) {
   const MainLayoutCtx = injectDeps(MainLayout);
@@ -42,6 +43,15 @@ export default function (injectDeps, {FlowRouter}) {
     action() {
       mount(MainLayoutCtx, {
         content: () => (<Login />)
+      });
+    }
+  });
+
+  FlowRouter.route('/logout', {
+    name: 'logout',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<Logout />)
       });
     }
   });

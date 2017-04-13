@@ -18,7 +18,7 @@ export default function () {
         const name = player.personaname;
 
         Meteor.users.update({_id: user._id}, {$set: {
-          'profile.name': name, 'profile.id': options.profile.id
+          'profile.name': name, 'profile.id': options.profile.id, 'profile.activeServer': false
         }});
       }
     });
