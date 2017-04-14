@@ -50,16 +50,18 @@ export default function () {
       if (!Meteor.settings.DISABLE_RENTING) {
         api.dropletsDelete(server.droplet).then(() => {
           Server.update(_id, {$set: {status: 'DESTROYED'}});
+          const user = Meteor.users.findOne(this.userId);
+          Meteor.clearTimeout(user.serverTimeout);
+          Meteor.users.update(this.userId, {$set: {
+            'profile.activeServer': null,
+            serverTimeout: null
+          }});
         });
-
-        const user = Meteor.users.findOne(this.userId);
-        Meteor.clearTimeout(user.serverTimeout);
-        Meteor.users.update({_id: this.userId}, {$set: {serverTimeout: null}});
       } else {
         Server.update(_id, {$set: {status: 'DESTROYED'}});
+        Meteor.users.update(this.userId, {$set: {'profile.activeServer': null}});
       }
 
-      Meteor.users.update(this.userId, {$set: {'profile.activeServer': false}});
     }
   });
 }
