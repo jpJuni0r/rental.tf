@@ -50,10 +50,7 @@ export default function () {
 
       if (!Meteor.settings.DISABLE_RENTING) {
         api.dropletsDelete(server.droplet).then(() => {
-<<<<<<< HEAD
-          Server.update(_id, {$set: {status: 'DESTROYED'}});
-          const user = Meteor.users.findOne(this.userId);
-          Meteor.clearTimeout(user.serverTimeout);
+          Server.update(_id, {$set: {status: 'DESTROYED', stage: 11}});
           Meteor.users.update(this.userId, {$set: {
             'profile.activeServer': null,
             serverTimeout: null
@@ -62,17 +59,6 @@ export default function () {
       } else {
         Server.update(_id, {$set: {status: 'DESTROYED'}});
         Meteor.users.update(this.userId, {$set: {'profile.activeServer': null}});
-=======
-          Server.update(_id, {$set: {status: 'DESTROYED', stage: 11}});
-        });
-
-        const user = Meteor.users.findOne(this.userId);
-        Meteor.clearTimeout(user.serverTimeout);
-        Meteor.clearTimeout(user.statusInterval);
-        Meteor.users.update({_id: this.userId}, {$set: {serverTimeout: null}});
-      } else {
-        Server.update(_id, {$set: {status: 'DESTROYED', stage: 11}});
->>>>>>> server-status
       }
 
     }
