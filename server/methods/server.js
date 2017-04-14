@@ -54,6 +54,7 @@ export default function () {
 
         const user = Meteor.users.findOne(this.userId);
         Meteor.clearTimeout(user.serverTimeout);
+        Meteor.clearTimeout(user.statusInterval);
         Meteor.users.update({_id: this.userId}, {$set: {serverTimeout: null}});
       } else {
         Server.update(_id, {$set: {status: 'DESTROYED'}});

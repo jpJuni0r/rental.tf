@@ -1,9 +1,16 @@
 import {Server} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
 import wrapper from 'do-wrapper';
+import Rcon from 'webrcon';
 
 const TOKEN = Meteor.settings.DO_KEY;
 const api = new wrapper(TOKEN);
+
+const rcon = new Rcon('139.59.133.61', 'rental');
+(async () => {
+  const result = await rcon.status();
+  console.log(result); // { name: 'UGC Highlander Match', map: 'pl_badwater', players: [] }
+})();
 
 function createServer(server) {
   return new Promise((resolve) => {
@@ -60,6 +67,11 @@ export default function () {
             });
           }, 1000);
 
+          // Server status checker
+          const interval = Meteor.setInterval(() => {
+            const rcon = new webrcon(server.ip, server.rcon);
+          });
+
           // Timeout server after three hours
           const timeout = Meteor.setTimeout(() => {
             if (server.status !== 'TERMINATED') {
@@ -67,13 +79,18 @@ export default function () {
                 Server.update({_id: server._id}, {$set: {
                   status: 'TIMEOUT', serverStopped: new Date()
                 }});
-                Meteor.users.update({_id: server.userId}, {$set: {'profile.activeServer': false}});
+                Meteor.users.update({_id: server.userId}, {$set: {
+                  'profile.activeServer': false,
+                  serverTimeout: null,
+                  statusInterval: null
+                }});
+                Meteor.clearInterval(interval);
               });
             }
           }, 3 * 59 * 60 * 1000); // One hour has 59min
 
           Meteor.users.update({_id: server.userId}, {$set: {
-            serverTimeout: timeout, serverStopped: new Date()
+            serverTimeout: timeout, statusInterval: interval, serverStopped: new Date()
           }});
         });
       } else {
