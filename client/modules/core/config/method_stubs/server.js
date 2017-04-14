@@ -6,6 +6,7 @@ export default function ({Meteor, Collections, check}) {
       const server = {
         _id,
         status: 'SETUP',
+        stage: 1,
         username,
         userId,
         password,

@@ -18,9 +18,10 @@ export default function () {
   Meteor.publish('server.single', function (serverId) {
     let server = Server.find(serverId);
 
-    if (server.fetch()[0].userId !== this.userId) {
+    if (server.fetch()[0] && server.fetch()[0].userId !== this.userId) {
       const fields = {
         status: 1,
+        stage: 1,
         region: 1,
         username: 1,
         userId: 1,
