@@ -5,9 +5,7 @@ class ServerList extends React.Component {
     const {servers} = this.props;
     return (
       <section className="container">
-        <h2>Serverlist</h2>
-
-        <h3>Recent Servers</h3>
+        <h2>Recent Servers</h2>
 
         <table className="table table-striped">
           <thead>
@@ -33,7 +31,7 @@ class ServerList extends React.Component {
                 className="pointer">
                 <td>{server.status}</td>
                 <td>
-                  <a href={`/profile/${server.userId}`}>{server.username}</a>
+                  {server.username}
                 </td>
                 <td>{server.region.toUpperCase()}</td>
                 <td>{server.createdAt}</td>
