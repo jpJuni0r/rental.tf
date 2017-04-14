@@ -8,13 +8,16 @@ export const composer = ({context, serverId}, onData) => {
     let server = Collections.Server.findOne(serverId);
     server.createdAt = moment(server.createdAt).format('lll');
 
-    onData(null, {server});
+    const isAdmin = Meteor.userId() === server.userId;
+
+    onData(null, {server, isAdmin});
   } else {
     let server = Collections.Server.findOne(serverId);
 
     if (server) {
       server.createdAt = moment(server.createdAt).format('lll');
-      onData(null, {server});
+      const isAdmin = Meteor.userId() === server.userId;
+      onData(null, {server, isAdmin});
     } else {
       onData();
     }

@@ -34,7 +34,13 @@ export default function () {
       const server = Server.findOne(_id);
 
       if (!server || this.userId !== server.userId) {
-        throw Meteor.Error(403);
+        throw new Meteor.Error(403);
+      }
+
+      // Check against server status
+      const {status} = server;
+      if (status === 'DESTROYED' || status === 'TIMEOUT') {
+        throw new Meteor.Error(403);
       }
 
       // Cancel server
@@ -45,9 +51,15 @@ export default function () {
         api.dropletsDelete(server.droplet).then(() => {
           Server.update(_id, {$set: {status: 'DESTROYED'}});
         });
+
+        const user = Meteor.users.findOne(this.userId);
+        Meteor.clearTimeout(user.serverTimeout);
+        Meteor.users.update({_id: this.userId}, {$set: {serverTimeout: null}});
       } else {
         Server.update(_id, {$set: {status: 'DESTROYED'}});
       }
+
+      Meteor.users.update(this.userId, {$set: {'profile.activeServer': false}});
     }
   });
 }

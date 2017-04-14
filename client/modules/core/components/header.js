@@ -2,7 +2,7 @@ import React from 'react';
 
 class Header extends React.Component {
   render() {
-    const {currentRoute, user, loggedIn} = this.props;
+    const {currentRoute, user, loggedIn, onOwnServerPage} = this.props;
     return (
       <header>
         <nav className="navbar navbar-default">
@@ -24,8 +24,8 @@ class Header extends React.Component {
               {loggedIn ? (
                 <ul className="nav navbar-nav pull-right">
                   {user.profile.activeServer ? (
-                    <li>
-                      <a href={`/server/${user.profile.activeServer}`}>Server running&nbsp;
+                    <li className={onOwnServerPage ? 'active' : null}>
+                      <a href={`/servers/${user.profile.activeServer}`}>Server running&nbsp;
                         <i className="glyphicon glyphicon-refresh gly-spin"></i>
                       </a>
                     </li>
