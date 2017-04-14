@@ -1,0 +1,58 @@
+/*
+  General layout
+*/
+
+html, body, #react-root, main {
+  height: 100%;
+  margin: 0;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+
+  .wrap {
+    flex: 1;
+  }
+}
+
+footer .inner {
+  padding: 8px 0;
+}
+
+/*
+  Server list
+*/
+
+.pointer {
+  cursor: pointer;
+}
+
+
+/*
+  Server
+*/
+
+.destroy-server {
+  float: right;
+}
+
+
+/*
+  Helpers
+*/
+
+.gly-spin {
+  animation: spin 2s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}

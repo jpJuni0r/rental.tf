@@ -7,6 +7,7 @@ import Server from './containers/server';
 import NewServer from './containers/new_server';
 import Login from './containers/login';
 import Logout from './containers/logout';
+import About from './components/about';
 
 export default function (injectDeps, {FlowRouter}) {
   const MainLayoutCtx = injectDeps(MainLayout);
@@ -52,6 +53,15 @@ export default function (injectDeps, {FlowRouter}) {
     action() {
       mount(MainLayoutCtx, {
         content: () => (<Logout />)
+      });
+    }
+  });
+
+  FlowRouter.route('/about', {
+    name: 'about',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<About />)
       });
     }
   });

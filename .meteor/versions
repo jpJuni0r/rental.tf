@@ -26,6 +26,7 @@ ecmascript-runtime@0.3.15
 ejson@1.0.13
 es5-shim@4.6.15
 fastclick@1.0.13
+fourseven:scss@4.5.0
 geojson-utils@1.0.10
 hot-code-push@1.0.4
 html-tools@1.0.11
@@ -64,11 +65,11 @@ retry@1.0.9
 routepolicy@1.0.12
 scholtzm:accounts-steam@1.2.0
 scholtzm:steam@1.2.0
+seba:minifiers-autoprefixer@1.0.1
 service-configuration@1.0.11
 shell-server@0.2.3
 spacebars@1.0.15
 spacebars-compiler@1.1.2
-standard-minifier-css@1.3.4
 standard-minifier-js@1.2.3
 templating@1.3.2
 templating-compiler@1.3.2

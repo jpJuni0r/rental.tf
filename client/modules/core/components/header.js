@@ -19,6 +19,9 @@ class Header extends React.Component {
                 <li className={currentRoute === 'server.new' ? 'active' : null}>
                   <a href="/new">New Server</a>
                 </li>
+                <li className={currentRoute === 'about' ? 'active' : null}>
+                  <a href="/about">About</a>
+                </li>
               </ul>
 
               {loggedIn ? (

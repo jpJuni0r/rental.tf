@@ -1,11 +1,15 @@
 import React from 'react';
 import Header from '../containers/header';
+import Footer from './footer';
 
 const MainLayout = ({content = () => null}) => (
   <main>
-    <Header />
+    <div className="wrap">
+      <Header />
+      {content()}
+    </div>
 
-    {content()}
+    <Footer />
   </main>
 );
 
