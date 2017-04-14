@@ -16,13 +16,17 @@ export default function () {
   });
 
   Meteor.publish('server.single', function (serverId) {
-    const user = Meteor.users.findOne(this.userId);
+    let server = Server.find(serverId);
 
-    let server;
-    if (user.isAdmin) {
-      server = Server.find(serverId);
-    } else {
-      server = Server.find({_id: serverId, userId: this.userId});
+    if (server.fetch()[0].userId !== this.userId) {
+      const fields = {
+        status: 1,
+        region: 1,
+        username: 1,
+        userId: 1,
+        createdAt: 1
+      };
+      server = Server.find(serverId, {fields});
     }
 
     return server;

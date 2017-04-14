@@ -4,11 +4,14 @@ import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 export const composer = ({context}, onData) => {
   const {Meteor, FlowRouter} = context();
 
-  const currentRoute = FlowRouter.current().route.name;
   const user = Meteor.user();
+  const currentRoute = FlowRouter.current().route.name;
+
+  const currentPath = FlowRouter.current().path;
 
   if (!Meteor.loggingIn() && user) {
-    return onData(null, {currentRoute, user, loggedIn: true});
+    const onOwnServerPage = currentPath === `/servers/${user.profile.activeServer}`;
+    return onData(null, {currentRoute, user, onOwnServerPage, loggedIn: true});
   }
 
   onData(null, {currentRoute, loggedIn: false});

@@ -6,7 +6,7 @@ const TOKEN = Meteor.settings.DO_KEY;
 const api = new wrapper(TOKEN);
 
 function createServer(server) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const {DEMOS_KEY, LOGS_KEY} = Meteor.settings;
 
     let formatedRegion = 'fra1';
@@ -34,36 +34,50 @@ function createServer(server) {
         `+sm_demostf_apikey ${DEMOS_KEY} +logstf_apikey ${LOGS_KEY}`
     };
 
-    api.dropletsCreate(configuration, (err, res) => {
-      if (err) {
-        return reject(err);
-      }
+    api.dropletsCreate(configuration).then((res) => {
 
       resolve(res.body.droplet);
     });
   });
 }
 export default function () {
-  Server.find().observe({
+  Server.find({createdAt: {$gte: new Date(new Date() - 1000)}}).observe({
     added(server) {
       if (!Meteor.settings.DISABLE_RENTING) {
-        if (new Date() - server.createdAt < 1000) {
-          createServer(server).then(droplet => {
-            Server.update({_id: server._id}, {$set: {droplet: droplet.id, status: 'STAGING'}});
+        createServer(server).then(droplet => { // BROKEN HERE
+          Server.update({_id: server._id}, {$set: {droplet: droplet.id, status: 'STAGING'}});
 
-            Meteor.setTimeout(() => {
-              api.dropletsGetById(droplet.id).then(res => {
-                const newDroplet = res.body.droplet;
-                const ip = newDroplet.networks.v4[0].ip_address;
+          // Fetch IP
+          Meteor.setTimeout(() => {
+            api.dropletsGetById(droplet.id).then(res => {
+              const newDroplet = res.body.droplet;
+              const ip = newDroplet.networks.v4[0].ip_address;
 
-                // TODO: Throw error on invalid IP
-                Server.update({_id: server._id}, {$set: {ip, status: 'BOOTING'}});
+              // TODO: Throw error on invalid IP
+              Server.update({_id: server._id}, {$set: {
+                ip, status: 'READY_SOON', serverStarted: new Date()
+              }});
+            });
+          }, 1000);
+
+          // Timeout server after two hours
+          const timeout = Meteor.setTimeout(() => {
+            if (server.status !== 'TERMINATED') {
+              api.dropletsDelete(droplet.id).then(() => {
+                Server.update({_id: server._id}, {$set: {
+                  status: 'TIMEOUT', serverStopped: new Date()
+                }});
+                Meteor.users.update({_id: server.userId}, {$set: {'profile.activeServer': false}});
               });
-            }, 2000);
-          });
-        }
+            }
+          }, 2 * 59 * 60 * 1000); // One hour has 59min
+
+          Meteor.users.update({_id: server.userId}, {$set: {
+            serverTimeout: timeout, serverStopped: new Date()
+          }});
+        });
       } else {
-        Server.update(server._id, {$set: {ip: '127.0.0.1', status: 'READY'}});
+        Server.update({_id: server._id}, {$set: {ip: '127.0.0.1', status: 'READY'}});
       }
     }
   });
