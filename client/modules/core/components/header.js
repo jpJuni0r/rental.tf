@@ -8,7 +8,7 @@ class Header extends React.Component {
         <nav className="navbar navbar-default">
           <div className="container">
             <div className="navbar-header">
-              <a href="/" className="navbar-brand">Rental.tf</a>
+              <a href="/" className="navbar-brand">Rental.TF</a>
             </div>
 
             <div className="navbar-collapse">
