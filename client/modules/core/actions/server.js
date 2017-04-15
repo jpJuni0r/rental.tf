@@ -9,6 +9,14 @@ export default {
     const userId = user._id;
     const username = user.profile.name;
 
+    if (!userId) {
+      throw new Meteor.Error(403, 'You need to log in first');
+    }
+
+    if (user.profile.activeServer) {
+      throw new Meteor.Error(403, 'You already have a server running');
+    }
+
     Meteor.call('server.new', _id, username, userId, serverPassword, rconPassword, region);
     FlowRouter.go(`/servers/${_id}`);
   },

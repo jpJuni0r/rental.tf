@@ -3,6 +3,12 @@ import React from 'react';
 class Server extends React.Component {
   render() {
     const {server, isAdmin} = this.props;
+
+    const needIp = !server.ip ? {className: 'hidden'} : null;
+    const ipPlaceholder = server.ip ? {className: 'hidden'} : null;
+
+    console.log(needIp);
+
     return (
       <section className="container server">
         {server.status !== 'DESTROYED' && server.status !== 'TERMINATED' && isAdmin ? (
@@ -27,11 +33,11 @@ class Server extends React.Component {
                 <h3>Details</h3>
                 <table className="table table-striped">
                   <tbody>
-                    <tr>
+                    <tr {...needIp}>
                       <th>IP</th>
                       <td>{server.ip}</td>
                     </tr>
-                    <tr>
+                    <tr {...needIp}>
                       <th>connect link</th>
                       <td>
                         <a href={`steam://connect/${server.ip}/${server.password}`}>
@@ -39,7 +45,7 @@ class Server extends React.Component {
                         </a>
                       </td>
                     </tr>
-                    <tr>
+                    <tr {...needIp}>
                       <th>SourceTV link</th>
                       <td>
                         <a href={`steam://connect/${server.ip}:27020/`}>
@@ -47,9 +53,14 @@ class Server extends React.Component {
                         </a>
                       </td>
                     </tr>
-                    <tr>
+                    <tr {...needIp}>
                       <th>rcon details</th>
                       <td>rcon_address {server.ip}; rcon_password {server.rcon}</td>
+                    </tr>
+                    <tr {...ipPlaceholder}>
+                      <td colSpan="2">
+                        <em>Waiting for IP address...</em>
+                      </td>
                     </tr>
                     <tr>
                       <th>Region</th>
@@ -71,8 +82,29 @@ class Server extends React.Component {
                 <table className="table table-striped">
                   <tbody>
                     <tr>
-                      <th>Stage</th>
-                      <td>{server.stage}</td>
+                      <th>Status</th>
+                      <td>
+                        {(() => {
+                          switch (server.stage) {
+                            case 1:
+                            case 2:
+                            case 3:
+                              return (
+                                <i className="fa fa-spin fa-spinner text-warning" />
+                              );
+                            case 4:
+                              return (
+                                <i className="fa fa-check text-success" />
+                              );
+                            case 11:
+                            case 12:
+                              return (
+                                <i className="fa fa-close" />
+                              );
+                          }
+                        })()}
+                        {` ${server.status}`} (Stage {server.stage})
+                      </td>
                     </tr>
                     <tr>
                       <th>Region</th>
@@ -93,8 +125,29 @@ class Server extends React.Component {
               <table className="table table-striped">
                 <tbody>
                   <tr>
-                    <th>Status text</th>
-                    <td>{server.status} (Stage {server.stage})</td>
+                    <th>Status</th>
+                    <td>
+                      {(() => {
+                        switch (server.stage) {
+                          case 1:
+                          case 2:
+                          case 3:
+                            return (
+                              <i className="fa fa-spin fa-spinner text-warning" />
+                            );
+                          case 4:
+                            return (
+                              <i className="fa fa-check text-success" />
+                            );
+                          case 11:
+                          case 12:
+                            return (
+                              <i className="fa fa-close" />
+                            );
+                        }
+                      })()}
+                      {` ${server.status}`} (Stage {server.stage})
+                    </td>
                   </tr>
                   <tr>
                     <th>Hostname</th>

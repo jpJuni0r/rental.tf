@@ -5,6 +5,7 @@ export default function () {
   Meteor.publish('server.list', function () {
     const fields = {
       status: 1,
+      stage: 1,
       username: 1,
       userId: 1,
       region: 1,

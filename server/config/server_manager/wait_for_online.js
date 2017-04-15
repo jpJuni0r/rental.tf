@@ -31,7 +31,7 @@ export default function (server, options) {
         status: 'ONLINE',
         stage: 4,
         serverStatus: {
-          name: 'Rental.TF',
+          hostname: 'Rental.TF',
           map: 'cp_badlands',
           players: []
         }

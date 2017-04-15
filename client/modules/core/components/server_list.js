@@ -10,7 +10,7 @@ class ServerList extends React.Component {
         <table className="table table-striped">
           <thead>
             <tr>
-              <th>Status</th>
+              <th />
               <th>User</th>
               <th>Region</th>
               <th>Date</th>
@@ -29,7 +29,28 @@ class ServerList extends React.Component {
             {servers.map(server => (
               <tr key={server._id} onClick={this._gotoServer.bind(this, server._id)}
                 className="pointer">
-                <td>{server.status}</td>
+                <td className="text-center">
+                  {(() => {
+                    switch (server.stage) {
+                      case 1:
+                      case 2:
+                      case 3:
+                        return (
+                          <i className="fa fa-spin fa-spinner text-warning" />
+                        );
+                      case 4:
+                        return (
+                          <i className="fa fa-check text-success" />
+                        );
+                      case 11:
+                      case 12:
+                        return (
+                          <i className="fa fa-close" />
+                        );
+
+                    }
+                  })()}
+                </td>
                 <td>
                   {server.username}
                 </td>

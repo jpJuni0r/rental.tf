@@ -10,8 +10,8 @@ export default function () {
 
       const verifiedUser = Meteor.users.findOne(this.userId);
 
-      if (!verifiedUser || verifiedUser.profile.serverActive) {
-        throw new Meteor.Error(403);
+      if (!verifiedUser || verifiedUser.profile.activeServer) {
+        throw new Meteor.Error(403, 'Not logged in or server already running');
       }
 
       const server = {
@@ -57,7 +57,7 @@ export default function () {
           }});
         });
       } else {
-        Server.update(_id, {$set: {status: 'DESTROYED'}});
+        Server.update(_id, {$set: {status: 'DESTROYED', stage: 11}});
         Meteor.users.update(this.userId, {$set: {'profile.activeServer': null}});
       }
 

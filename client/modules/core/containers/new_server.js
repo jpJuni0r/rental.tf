@@ -27,7 +27,7 @@ export const composer = ({context}, onData) => {
 
   let serverActive = false;
 
-  if (user && user.profile && user.profile.serverActive) {
+  if (user && user.profile && user.profile.activeServer) {
     serverActive = true;
   }
 
