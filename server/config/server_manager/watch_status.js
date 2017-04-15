@@ -24,6 +24,8 @@ export default function (server, options) {
         }
       }
 
+      lastUpdate = new Date();
+
       rcon = new webrcon(server.ip, server.rcon);
       rcon.status().then(res => {
         lastUpdate = new Date();
