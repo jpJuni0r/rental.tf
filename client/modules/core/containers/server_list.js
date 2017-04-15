@@ -5,7 +5,7 @@ export const composer = ({context}, onData) => {
   const {Meteor, Collections, moment} = context();
 
   if (Meteor.subscribe('server.list').ready()) {
-    let servers = Collections.Server.find().fetch();
+    let servers = Collections.Server.find({}, {sort: {createdAt: -1}}).fetch();
 
     servers = servers.map(server => {
       return {

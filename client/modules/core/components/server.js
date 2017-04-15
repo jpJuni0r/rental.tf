@@ -7,8 +7,6 @@ class Server extends React.Component {
     const needIp = !server.ip ? {className: 'hidden'} : null;
     const ipPlaceholder = server.ip ? {className: 'hidden'} : null;
 
-    console.log(needIp);
-
     return (
       <section className="container server">
         {server.status !== 'DESTROYED' && server.status !== 'TERMINATED' && isAdmin ? (
@@ -82,31 +80,6 @@ class Server extends React.Component {
                 <table className="table table-striped">
                   <tbody>
                     <tr>
-                      <th>Status</th>
-                      <td>
-                        {(() => {
-                          switch (server.stage) {
-                            case 1:
-                            case 2:
-                            case 3:
-                              return (
-                                <i className="fa fa-spin fa-spinner text-warning" />
-                              );
-                            case 4:
-                              return (
-                                <i className="fa fa-check text-success" />
-                              );
-                            case 11:
-                            case 12:
-                              return (
-                                <i className="fa fa-close" />
-                              );
-                          }
-                        })()}
-                        {` ${server.status}`} (Stage {server.stage})
-                      </td>
-                    </tr>
-                    <tr>
                       <th>Region</th>
                       <td>{server.region.toUpperCase()}</td>
                     </tr>
@@ -167,8 +140,29 @@ class Server extends React.Component {
               <table className="table table-striped">
                 <tbody>
                   <tr>
-                    <th>Status text</th>
-                    <td>{server.status} (Stage {server.stage})</td>
+                    <th>Status</th>
+                    <td>
+                      {(() => {
+                        switch (server.stage) {
+                          case 1:
+                          case 2:
+                          case 3:
+                            return (
+                              <i className="fa fa-spin fa-spinner text-warning" />
+                            );
+                          case 4:
+                            return (
+                              <i className="fa fa-check text-success" />
+                            );
+                          case 11:
+                          case 12:
+                            return (
+                              <i className="fa fa-close" />
+                            );
+                        }
+                      })()}
+                      {` ${server.status}`} (Stage {server.stage})
+                    </td>
                   </tr>
                 </tbody>
               </table>

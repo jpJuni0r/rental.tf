@@ -26,6 +26,7 @@ export default function () {
         region: 1,
         username: 1,
         userId: 1,
+        serverStatus: 1,
         createdAt: 1
       };
       server = Server.find(serverId, {fields});
