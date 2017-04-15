@@ -12,7 +12,7 @@ export default function (server, options) {
         return;
       }
 
-      const rcon = new webrcon(server.ip, server.rcon);
+      const rcon = new webrcon(freshServer.ip, freshServer.rcon);
       rcon.status().then(res => {
         Server.update(server._id, {$set: {
           status: 'ONLINE',
