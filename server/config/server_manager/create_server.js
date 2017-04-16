@@ -21,7 +21,7 @@ export default function (server, options) {
       name: `tf2-${server._id}-${server.region}`,
       region: formatedRegion,
       size: '2gb',
-      image: 24164071,
+      image: 24186907,
       ssh_keys: [ // eslint-disable-line camelcase
         '3a:68:4d:94:9d:77:89:c7:17:c8:cb:3e:d4:fd:1d:23'
       ],
