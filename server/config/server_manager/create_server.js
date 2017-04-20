@@ -31,7 +31,7 @@ export default function (server, options) {
         'docker run -p 27015:27015/tcp -p 27015:27015/udp -p 27020:27020/udp -p 27021:27021/tcp ' +
         'spiretf/docker-comp-server ' +
         `+sv_password "${server.password}" +rcon_password "${server.rcon}" ` +
-        `+map cp_badlands +hostname "Rental.TF Match Server | Region ${formatedRegion.toUpperCase()}` +
+        `+map cp_badlands +hostname "Rental.TF Match Server | Region ${formatedRegion.toUpperCase()}" ` +
         `+sm_demostf_apikey ${DEMOS_KEY} +logstf_apikey ${LOGS_KEY}`
     };
 
