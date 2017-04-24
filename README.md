@@ -3,6 +3,10 @@
 Rental.TF is a service to rent TF2 servers on demand using [DigitalOcan](https://digitalocean.com) as a provider.
 
 
+![Screenshot 1](https://i.imgur.com/mp8iYaE.png)
+![Screenshot 2](https://i.imgur.com/DwwPyKW.png)
+
+
 ## Setup
 
 1. Install Meteor
